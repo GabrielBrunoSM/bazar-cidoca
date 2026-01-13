@@ -58,6 +58,10 @@
           animation: float 6s ease-in-out infinite;
         }
     </style>
+    <script>
+      // Garante que o process.env exista para evitar erros de runtime em produção
+      window.process = window.process || { env: {} };
+    </script>
 <script type="importmap">
 {
   "imports": {
@@ -72,5 +76,6 @@
 </head>
 <body>
     <div id="root"></div>
+    <script type="module" src="./index.tsx"></script>
 </body>
 </html>

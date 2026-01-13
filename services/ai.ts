@@ -2,24 +2,14 @@
 import { GoogleGenAI } from "@google/genai";
 
 export class AIService {
-  private ai: GoogleGenAI | null = null;
-
-  constructor() {
-    try {
-      // Obtém a chave de forma segura
-      const apiKey = typeof process !== 'undefined' && process.env ? process.env.API_KEY : '';
-      if (apiKey) {
-        this.ai = new GoogleGenAI({ apiKey });
-      }
-    } catch (e) {
-      console.error("Falha ao inicializar GoogleGenAI:", e);
-    }
+  private getClient() {
+    return new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
   }
 
   async generateBrandVisual(prompt: string): Promise<string | null> {
-    if (!this.ai) return null;
     try {
-      const response = await this.ai.models.generateContent({
+      const ai = this.getClient();
+      const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash-image',
         contents: {
           parts: [{ text: prompt }]
@@ -44,14 +34,15 @@ export class AIService {
   }
 
   async generateProductCopy(productName: string): Promise<string> {
-    if (!this.ai) return "Serviço de IA não disponível.";
     try {
-      const response = await this.ai.models.generateContent({
+      const ai = this.getClient();
+      const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: `Escreva uma descrição encantadora para um item de brechó chamado "${productName}". Use um tom acolhedor, destacando a sustentabilidade e o estilo vintage.`,
       });
       return response.text || "Descrição não disponível.";
     } catch (error) {
+      console.error("Erro ao gerar cópia:", error);
       return "Erro ao gerar descrição.";
     }
   }
