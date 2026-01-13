@@ -27,7 +27,7 @@ const PrintBanner: React.FC<{ id?: string }> = ({ id }) => {
           <h2 className="text-[90px] font-script text-[#1A302B] leading-[0.8]">Cidoca</h2>
           <div className="flex items-center gap-3 mt-4">
              <div className="h-[1px] w-6 bg-[#1A302B]/30"></div>
-             <span className="text-[12px] font-bold tracking-[0.3em] text-[#1A302B]/80">MODA SUSTENTÁVEL</span>
+             <span className="text-[12px] font-bold tracking-[0.3em] text-[#1A302B]/80 uppercase">Moda Sustentável</span>
              <div className="h-[1px] w-6 bg-[#1A302B]/30"></div>
           </div>
         </div>
@@ -38,7 +38,7 @@ const PrintBanner: React.FC<{ id?: string }> = ({ id }) => {
         </p>
 
         {/* Contatos */}
-        <div className="flex gap-8 pt-8 w-full justify-center">
+        <div className="flex flex-wrap gap-8 pt-8 w-full justify-center">
           <div className="flex items-center gap-2 text-[#1A302B]">
             <Instagram className="w-6 h-6" />
             <span className="text-xl font-bold">@bazar.cidoca</span>
@@ -56,6 +56,7 @@ const PrintBanner: React.FC<{ id?: string }> = ({ id }) => {
           src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200&auto=format&fit=crop" 
           className="absolute inset-0 w-full h-full object-cover grayscale-[10%] sepia-[10%] opacity-90"
           alt="Clientes Bazar da Cidoca"
+          crossOrigin="anonymous"
         />
         <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#F4F1E8]"></div>
         

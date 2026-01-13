@@ -1,20 +1,43 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import Logo from './components/Logo';
 import PrintBanner from './components/PrintBanner';
 import { InstagramMockup, WhatsAppMockup } from './components/MockupSection';
-import { Download, Sparkles, Printer, ArrowRight } from 'lucide-react';
+import { Download, Sparkles, Loader2 } from 'lucide-react';
+import { toPng } from 'html-to-image';
 
 const App: React.FC = () => {
+  const [downloading, setDownloading] = useState<string | null>(null);
 
-  const handleDownload = (type: string) => {
-    // Simula a geração de um arquivo de imagem
-    const link = document.createElement('a');
-    link.href = '#';
-    link.setAttribute('download', `bazar-cidoca-${type}.png`);
-    document.body.appendChild(link);
-    alert(`Preparando o arquivo de alta resolução para: ${type.toUpperCase()}. O download começará em instantes.`);
-    // Em um cenário real com bibliotecas como html2canvas, usaríamos a função aqui.
+  const handleDownload = async (elementId: string, fileName: string) => {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+
+    setDownloading(elementId);
+    
+    try {
+      // Pequeno delay para garantir que o DOM está pronto e animações pausadas se necessário
+      await new Promise(r => setTimeout(r, 500));
+      
+      const dataUrl = await toPng(element, { 
+        cacheBust: true,
+        backgroundColor: '#F4F1E8',
+        style: {
+          borderRadius: '0',
+          transform: 'scale(1)'
+        }
+      });
+      
+      const link = document.createElement('a');
+      link.download = `${fileName}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error('Erro ao gerar imagem:', err);
+      alert('Houve um erro ao gerar a imagem. Verifique sua conexão e tente novamente.');
+    } finally {
+      setDownloading(null);
+    }
   };
 
   return (
@@ -48,10 +71,15 @@ const App: React.FC = () => {
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-serif italic">1. Banner de Fachada / Impressão</h2>
             <button 
-              onClick={() => handleDownload('banner')}
-              className="flex items-center gap-2 bg-[#1A302B] text-white px-6 py-3 rounded-full font-bold text-sm hover:bg-[#E68DA3] transition-all"
+              onClick={() => handleDownload('main-banner', 'bazar-cidoca-banner')}
+              disabled={downloading === 'main-banner'}
+              className="flex items-center gap-2 bg-[#1A302B] text-white px-6 py-3 rounded-full font-bold text-sm hover:bg-[#E68DA3] transition-all disabled:opacity-50"
             >
-              <Download className="w-4 h-4" /> Baixar em Alta Resolução
+              {downloading === 'main-banner' ? (
+                <><Loader2 className="w-4 h-4 animate-spin" /> Gerando...</>
+              ) : (
+                <><Download className="w-4 h-4" /> Baixar em Alta Resolução</>
+              )}
             </button>
           </div>
           <PrintBanner id="main-banner" />
@@ -62,13 +90,18 @@ const App: React.FC = () => {
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-serif italic">2. Logo Oficial</h2>
             <button 
-              onClick={() => handleDownload('logo')}
-              className="flex items-center gap-2 text-[#E68DA3] font-black text-xs uppercase tracking-widest hover:underline"
+              onClick={() => handleDownload('logo-area', 'bazar-cidoca-logo')}
+              disabled={downloading === 'logo-area'}
+              className="flex items-center gap-2 text-[#E68DA3] font-black text-xs uppercase tracking-widest hover:underline disabled:opacity-50"
             >
-              <Download className="w-4 h-4" /> Baixar SVG/PNG
+              {downloading === 'logo-area' ? (
+                <><Loader2 className="w-3 h-3 animate-spin" /> Processando...</>
+              ) : (
+                <><Download className="w-4 h-4" /> Baixar PNG</>
+              )}
             </button>
           </div>
-          <div className="bg-white p-20 rounded-3xl border border-stone-100 flex items-center justify-center shadow-sm">
+          <div id="logo-area" className="bg-white p-20 rounded-3xl border border-stone-100 flex items-center justify-center shadow-sm">
              <Logo size="xl" />
           </div>
         </div>
@@ -91,10 +124,10 @@ const App: React.FC = () => {
            <h3 className="text-5xl font-serif italic mb-8">Tudo pronto para o sucesso.</h3>
            <p className="text-white/60 mb-12 max-w-xl mx-auto">Sua identidade está completa. Agora é só aplicar nas redes sociais e ver sua boutique de bairro brilhar.</p>
            <button 
-             onClick={() => handleDownload('kit-completo')}
-             className="bg-[#E68DA3] text-white px-12 py-6 rounded-full font-black text-lg hover:scale-105 transition-all shadow-xl"
+             className="bg-[#E68DA3] text-white px-12 py-6 rounded-full font-black text-lg hover:scale-105 transition-all shadow-xl opacity-50 cursor-not-allowed"
+             title="Use os botões acima para baixar cada item individualmente"
            >
-             Baixar Kit de Marca Completo (.zip)
+             Kit de Marca (Abaixo)
            </button>
         </div>
       </header>
