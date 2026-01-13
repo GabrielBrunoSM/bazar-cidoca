@@ -4,72 +4,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bazar da Cidoca | Boutique de Bairro</title>
+    <title>Bazar da Cidoca | Boutique Digital</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Satisfy&family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Satisfy&family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --color-forest: #0A2622;
+            --color-forest: #1A302B;
             --color-rose: #E68DA3;
-            --color-sage: #8DA491;
-            --color-cream: #FDFBF7;
+            --color-cream: #F4F1E8;
         }
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--color-cream);
             color: var(--color-forest);
-            -webkit-font-smoothing: antialiased;
+            margin: 0;
+            overflow-x: hidden;
         }
-        .font-serif {
-            font-family: 'DM Serif Display', serif;
-        }
-        .font-script {
-            font-family: 'Satisfy', cursive;
-        }
-        .bg-forest { background-color: var(--color-forest); }
-        .text-forest { color: var(--color-forest); }
-        .bg-rose { background-color: var(--color-rose); }
-        .text-rose { color: var(--color-rose); }
-        .bg-sage { background-color: var(--color-sage); }
-        .text-sage { color: var(--color-sage); }
+        .font-serif { font-family: 'DM Serif Display', serif; }
+        .font-script { font-family: 'Satisfy', cursive; }
         
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--color-cream);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #E68DA333;
-            border-radius: 20px;
-            border: 3px solid var(--color-cream);
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--color-rose);
-        }
-
         @keyframes float {
-          0% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-          100% { transform: translateY(0px); }
+            0%, 100% { transform: translateY(0) rotate(12deg); }
+            50% { transform: translateY(-10px) rotate(15deg); }
         }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
+        .animate-tag {
+            animation: float 4s ease-in-out infinite;
         }
     </style>
-    <script>
-      // Garante que o process.env exista para evitar erros de runtime em produção
-      window.process = window.process || { env: {} };
-    </script>
-<script type="importmap">
+    <script>window.process = { env: { API_KEY: "" } };</script>
+    <script type="importmap">
 {
   "imports": {
-    "react": "https://esm.sh/react@^19.2.3",
+    "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+    "lucide-react": "https://esm.sh/lucide-react@0.460.0",
+    "@google/genai": "https://esm.sh/@google/genai@0.21.0",
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "@google/genai": "https://esm.sh/@google/genai@^1.35.0",
-    "lucide-react": "https://esm.sh/lucide-react@^0.562.0"
+    "react/": "https://esm.sh/react@^19.2.3/"
   }
 }
 </script>

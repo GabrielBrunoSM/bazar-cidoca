@@ -1,83 +1,72 @@
 
 import React from 'react';
-import Logo from './Logo';
 import { Instagram, MessageCircle } from 'lucide-react';
 
-const PrintBanner: React.FC = () => {
+const PrintBanner: React.FC<{ id?: string }> = ({ id }) => {
   return (
-    <div className="w-full bg-[#FDFBF7] border border-stone-100 shadow-2xl rounded-[1.5rem] overflow-hidden relative group">
-      {/* Textura de papel sutil */}
-      <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]"></div>
+    <div id={id} className="w-full bg-[#F4F1E8] border border-stone-200 shadow-2xl rounded-sm overflow-hidden relative min-h-[400px] flex flex-col lg:flex-row">
+      {/* Textura de papel fundo */}
+      <div className="absolute inset-0 opacity-[0.08] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]"></div>
       
-      <div className="flex flex-col lg:flex-row min-h-[450px]">
-        {/* Lado Esquerdo: Identidade e Conteúdo (Layout idêntico à imagem) */}
-        <div className="flex-[0.9] p-10 lg:p-16 flex flex-col items-center lg:items-center text-center space-y-4 z-10 relative">
-          
-          {/* Logo Icon (Coração + Cabide) */}
-          <div className="scale-90 mb-2">
-            <Logo variant="icon-only" />
-          </div>
+      {/* Lado Esquerdo: Conteúdo */}
+      <div className="flex-[1.2] p-12 lg:p-16 flex flex-col items-center text-center justify-center space-y-4 z-10">
+        
+        {/* Logo Icon Area */}
+        <div className="relative mb-4">
+          <div className="absolute inset-0 bg-[#E68DA3]/20 rounded-full blur-2xl scale-150"></div>
+          <svg viewBox="0 0 160 140" className="w-24 h-24 relative z-10" fill="none">
+             <path d="M80 25 C 100 10, 130 20, 130 50 C 130 80, 80 110, 80 110 C 80 110, 30 80, 30 50 C 30 20, 60 10, 80 25" fill="#E68DA333" />
+             <path d="M85 35 C 85 22, 65 22, 65 35 C 65 42, 80 48, 80 60" stroke="#E68DA3" strokeWidth="4" strokeLinecap="round" />
+             <path d="M80 60 L 40 95 C 60 100, 100 100, 120 95 L 80 60" stroke="#1A302B" strokeWidth="4" strokeLinejoin="round" />
+          </svg>
+        </div>
 
-          {/* Nome da Marca */}
-          <div className="flex flex-col items-center">
-            <span className="text-[12px] font-black uppercase tracking-[0.6em] text-forest/60 mb-[-8px]">
-              BAZAR DA
-            </span>
-            <h2 className="text-[82px] font-script text-forest leading-none">
-              Cidoca
-            </h2>
-            <div className="flex items-center gap-4 mt-1">
-              <div className="h-[1px] w-8 bg-forest/20"></div>
-              <span className="text-[10px] font-bold tracking-[0.4em] uppercase text-forest/70">
-                MODA SUSTENTÁVEL
-              </span>
-              <div className="h-[1px] w-8 bg-forest/20"></div>
-            </div>
-          </div>
-
-          {/* Citação da Marca */}
-          <div className="max-w-md pt-6">
-            <p className="text-xl lg:text-2xl font-serif italic text-forest/90 leading-snug">
-              "Moda consciente para quem valoriza a alma de cada peça e o carinho de uma marca de bairro."
-            </p>
-          </div>
-
-          {/* Info de Contato (Base do banner) */}
-          <div className="flex flex-col sm:flex-row gap-10 pt-10 border-t border-forest/5 w-full justify-center lg:justify-start">
-            <div className="flex items-center gap-3 text-forest">
-              <Instagram className="w-8 h-8 stroke-[1.5px]" />
-              <span className="text-2xl font-bold tracking-tight">@bazar.cidoca</span>
-            </div>
-            <div className="flex items-center gap-3 text-forest">
-              <MessageCircle className="w-8 h-8 stroke-[1.5px]" />
-              <span className="text-2xl font-bold tracking-tight">98 98528-5143</span>
-            </div>
+        {/* Text Branding */}
+        <div className="flex flex-col items-center">
+          <span className="text-[14px] font-bold tracking-[0.5em] text-[#1A302B]/60 mb-1">BAZAR DA</span>
+          <h2 className="text-[90px] font-script text-[#1A302B] leading-[0.8]">Cidoca</h2>
+          <div className="flex items-center gap-3 mt-4">
+             <div className="h-[1px] w-6 bg-[#1A302B]/30"></div>
+             <span className="text-[12px] font-bold tracking-[0.3em] text-[#1A302B]/80">MODA SUSTENTÁVEL</span>
+             <div className="h-[1px] w-6 bg-[#1A302B]/30"></div>
           </div>
         </div>
 
-        {/* Lado Direito: Ilustração das Mulheres (Representação visual da arte) */}
-        <div className="flex-1 relative min-h-[400px] lg:min-h-full overflow-hidden flex items-end">
-          {/* Imagem de mulheres estilosas em tons terrosos para casar com a ilustração original */}
-          <img 
-            src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1200&auto=format&fit=crop" 
-            className="w-full h-full object-cover grayscale-[15%] sepia-[15%] opacity-90 transition-transform duration-[8000ms] group-hover:scale-105"
-            alt="Moda Bazar da Cidoca"
-          />
-          <div className="absolute inset-0 bg-gradient-to-l from-transparent via-[#FDFBF7]/10 to-[#FDFBF7] lg:block hidden"></div>
-          
-          {/* Etiquetas Penduradas (Canto superior direito) */}
-          <div className="absolute top-0 right-12 flex gap-4 z-20">
-             {/* Tag Bege */}
-             <div className="w-14 h-32 bg-[#B4846C] rounded-b-lg flex flex-col items-center justify-end pb-4 shadow-xl border-t-[12px] border-white/10 animate-float" style={{ animationDelay: '0s' }}>
-               <div className="absolute top-2 w-2 h-2 bg-white/20 rounded-full"></div>
-               <span className="[writing-mode:vertical-lr] text-white/90 font-black tracking-[0.4em] text-[10px] uppercase">BAZAR</span>
-             </div>
-             {/* Tag Verde */}
-             <div className="w-14 h-36 bg-[#2D433E] rounded-b-lg flex flex-col items-center justify-end pb-4 shadow-xl border-t-[12px] border-white/10 -mt-4 animate-float" style={{ animationDelay: '1.5s' }}>
-               <div className="absolute top-2 w-2 h-2 bg-white/20 rounded-full"></div>
-               <span className="[writing-mode:vertical-lr] text-white/90 font-black tracking-[0.4em] text-[10px] uppercase">CIDOCA</span>
-             </div>
+        {/* Citação exata */}
+        <p className="max-w-md pt-8 text-2xl font-serif italic text-[#1A302B]/90 leading-tight">
+          "Moda consciente para quem valoriza a alma de cada peça e o carinho de uma marca de bairro."
+        </p>
+
+        {/* Contatos */}
+        <div className="flex gap-8 pt-8 w-full justify-center">
+          <div className="flex items-center gap-2 text-[#1A302B]">
+            <Instagram className="w-6 h-6" />
+            <span className="text-xl font-bold">@bazar.cidoca</span>
           </div>
+          <div className="flex items-center gap-2 text-[#1A302B]">
+            <MessageCircle className="w-6 h-6 fill-[#1A302B]/10" />
+            <span className="text-xl font-bold">98 98528-5143</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Lado Direito: Ilustração das 4 pessoas */}
+      <div className="flex-1 relative overflow-hidden min-h-[400px]">
+        <img 
+          src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200&auto=format&fit=crop" 
+          className="absolute inset-0 w-full h-full object-cover grayscale-[10%] sepia-[10%] opacity-90"
+          alt="Clientes Bazar da Cidoca"
+        />
+        <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#F4F1E8]"></div>
+        
+        {/* Price Tags exactly like in the picture */}
+        <div className="absolute top-6 right-10 flex gap-4 z-20">
+           <div className="w-12 h-28 bg-[#B4846C] rounded-b-md shadow-xl border-t-8 border-white/20 flex items-center justify-end pb-4 animate-tag" style={{ animationDelay: '0s' }}>
+              <span className="[writing-mode:vertical-lr] text-white font-black tracking-widest text-[9px]">BAZAR</span>
+           </div>
+           <div className="w-12 h-28 bg-[#2D433E] rounded-b-md shadow-xl border-t-8 border-white/20 flex items-center justify-end pb-4 -mt-4 animate-tag" style={{ animationDelay: '1s' }}>
+              <span className="[writing-mode:vertical-lr] text-white font-black tracking-widest text-[9px]">BAZAR</span>
+           </div>
         </div>
       </div>
     </div>
