@@ -16,16 +16,16 @@ const App: React.FC = () => {
     setDownloading(elementId);
     
     try {
-      // Pequeno delay para garantir que fontes externas e estilos Inline foram processados
-      await new Promise(r => setTimeout(r, 1000));
+      // Espera um pouco para garantir que as fontes do Google carregaram
+      await new Promise(r => setTimeout(r, 1500));
       
       const dataUrl = await toPng(element, { 
         cacheBust: true,
         pixelRatio: 2,
         backgroundColor: '#F2EDE1',
-        // Filtro para ignorar erros de folhas de estilo de terceiros (CORS)
-        filter: (node) => {
-            if (node.tagName === 'LINK' && node.getAttribute('rel') === 'stylesheet') {
+        // O filtro abaixo evita o erro de "Cannot access rules" ao ignorar links de CSS externos problemáticos
+        filter: (node: any) => {
+            if (node.tagName === 'LINK' && node.rel === 'stylesheet' && !node.href.includes('fonts.googleapis.com')) {
                 return false;
             }
             return true;
@@ -44,8 +44,8 @@ const App: React.FC = () => {
       link.click();
       document.body.removeChild(link);
     } catch (err) {
-      console.error('Erro detalhado no download:', err);
-      alert('Não foi possível gerar a imagem devido a restrições de segurança do navegador. Tente usar o Google Chrome ou Firefox.');
+      console.error('Erro ao gerar imagem:', err);
+      alert('Houve um problema ao gerar a imagem. Tente usar o Google Chrome ou tirar um print da tela, pois alguns navegadores bloqueiam essa função por segurança.');
     } finally {
       setDownloading(null);
     }
@@ -58,8 +58,8 @@ const App: React.FC = () => {
           <Logo variant="horizontal" size="sm" />
         </div>
         <div className="hidden md:flex gap-8 text-[10px] font-bold uppercase tracking-[0.2em] text-stone-400">
-          <a href="#id" className="hover:text-[#E68DA3]">Marca</a>
-          <a href="#social" className="hover:text-[#E68DA3]">Redes</a>
+          <a href="#" className="hover:text-[#E68DA3]">Marca</a>
+          <a href="#" className="hover:text-[#E68DA3]">Redes</a>
           <a href="#downloads" className="text-[#E68DA3]">Downloads</a>
         </div>
       </nav>
@@ -68,27 +68,27 @@ const App: React.FC = () => {
         <header className="max-w-3xl mb-16">
           <div className="inline-flex items-center gap-2 bg-[#E68DA3]/10 px-4 py-2 rounded-full text-[#E68DA3] mb-6">
             <Sparkles className="w-4 h-4" />
-            <span className="text-[10px] font-black uppercase tracking-widest">Nova Identidade</span>
+            <span className="text-[10px] font-black uppercase tracking-widest">Identidade Visual</span>
           </div>
           <h1 className="text-6xl font-serif italic text-[#1A302B] mb-6 leading-tight">
-            Seu Bazar, agora como <span className="text-[#E68DA3]">Boutique Profissional.</span>
+            Sua marca, agora com <span className="text-[#E68DA3]">alma e profissionalismo.</span>
           </h1>
           <p className="text-xl text-stone-500 font-light leading-relaxed">
-            Aqui estão os materiais prontos para o seu novo ciclo. O banner abaixo foi desenhado conforme sua referência exata.
+            Abaixo você encontra o banner oficial do Bazar da Cidoca, desenhado conforme sua referência.
           </p>
         </header>
 
         {/* Seção do Banner */}
         <section id="downloads" className="space-y-8">
           <div className="flex items-center justify-between border-b border-stone-100 pb-4">
-            <h2 className="text-3xl font-serif italic text-[#1A302B]">1. Banner de Fachada</h2>
+            <h2 className="text-3xl font-serif italic text-[#1A302B]">Banner de Fachada</h2>
             <button 
               onClick={() => handleDownload('main-banner', 'banner-cidoca')}
               disabled={downloading === 'main-banner'}
-              className="flex items-center gap-3 bg-[#1A302B] text-white px-8 py-4 rounded-full font-bold text-sm hover:bg-[#E68DA3] transition-all disabled:opacity-50 shadow-lg active:scale-95"
+              className="flex items-center gap-3 bg-[#1A302B] text-white px-8 py-4 rounded-full font-bold text-sm hover:bg-[#E68DA3] transition-all disabled:opacity-50 shadow-lg"
             >
               {downloading === 'main-banner' ? (
-                <><Loader2 className="w-5 h-5 animate-spin" /> Gerando Arquivo...</>
+                <><Loader2 className="w-5 h-5 animate-spin" /> Gerando...</>
               ) : (
                 <><Download className="w-5 h-5" /> Baixar Banner (PNG)</>
               )}
@@ -97,31 +97,11 @@ const App: React.FC = () => {
           <PrintBanner id="main-banner" />
         </section>
 
-        {/* Seção da Logo */}
-        <section className="mt-40 space-y-8">
-          <div className="flex items-center justify-between border-b border-stone-100 pb-4">
-            <h2 className="text-3xl font-serif italic text-[#1A302B]">2. Logo Oficial</h2>
-            <button 
-              onClick={() => handleDownload('logo-box', 'logo-cidoca')}
-              disabled={downloading === 'logo-box'}
-              className="flex items-center gap-2 text-[#E68DA3] font-black text-xs uppercase tracking-widest hover:underline disabled:opacity-50"
-            >
-               {downloading === 'logo-box' ? 'Processando...' : <><Download className="w-4 h-4" /> Baixar Logo</>}
-            </button>
-          </div>
-          <div id="logo-box" className="bg-white p-24 rounded-[3rem] border border-stone-100 flex items-center justify-center shadow-sm">
-             <Logo size="xl" />
-          </div>
-        </section>
-
-        {/* Redes Sociais */}
-        <section id="social" className="mt-40">
-          <h2 className="text-3xl font-serif italic text-[#1A302B] mb-16">3. Visual das Redes Sociais</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-            <InstagramMockup />
-            <WhatsAppMockup />
-          </div>
-        </section>
+        {/* Logos e Redes */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mt-32">
+          <InstagramMockup />
+          <WhatsAppMockup />
+        </div>
       </main>
     </div>
   );
