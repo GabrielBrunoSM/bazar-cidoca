@@ -16,13 +16,20 @@ const App: React.FC = () => {
     setDownloading(elementId);
     
     try {
-      // Pequeno delay para garantir renderização de fontes e estilos
-      await new Promise(r => setTimeout(r, 800));
+      // Pequeno delay para garantir que fontes externas e estilos Inline foram processados
+      await new Promise(r => setTimeout(r, 1000));
       
       const dataUrl = await toPng(element, { 
         cacheBust: true,
-        pixelRatio: 2, // Dobra a qualidade da imagem
+        pixelRatio: 2,
         backgroundColor: '#F2EDE1',
+        // Filtro para ignorar erros de folhas de estilo de terceiros (CORS)
+        filter: (node) => {
+            if (node.tagName === 'LINK' && node.getAttribute('rel') === 'stylesheet') {
+                return false;
+            }
+            return true;
+        },
         style: {
           borderRadius: '0',
           transform: 'scale(1)',
@@ -37,8 +44,8 @@ const App: React.FC = () => {
       link.click();
       document.body.removeChild(link);
     } catch (err) {
-      console.error('Erro ao baixar:', err);
-      alert('Houve um problema ao gerar o download. Tente abrir no Chrome ou Safari.');
+      console.error('Erro detalhado no download:', err);
+      alert('Não foi possível gerar a imagem devido a restrições de segurança do navegador. Tente usar o Google Chrome ou Firefox.');
     } finally {
       setDownloading(null);
     }
@@ -46,7 +53,6 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Header e Navegação */}
       <nav className="max-w-7xl mx-auto px-6 py-8 flex justify-between items-center">
         <div className="scale-75 origin-left">
           <Logo variant="horizontal" size="sm" />
@@ -68,7 +74,7 @@ const App: React.FC = () => {
             Seu Bazar, agora como <span className="text-[#E68DA3]">Boutique Profissional.</span>
           </h1>
           <p className="text-xl text-stone-500 font-light leading-relaxed">
-            Aqui estão os materiais prontos para o seu novo ciclo. Clique em baixar para salvar no seu celular ou computador.
+            Aqui estão os materiais prontos para o seu novo ciclo. O banner abaixo foi desenhado conforme sua referência exata.
           </p>
         </header>
 
